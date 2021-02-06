@@ -1,0 +1,62 @@
+{
+  "id": "fc78481a-7de6-4a6b-a148-b6d8f031fe58",
+  "name": "Job-Event2",
+  "description": null,
+  "default_flow": "Default",
+  "flows": [
+    {
+      "name": "Default",
+      "description": "Default custom flow",
+      "commands": []
+    }
+  ],
+  "files": [],
+  "functions": [],
+  "apps": [
+    {
+      "name": "amplitude",
+      "description": "## Requirements\n\nIn order to use this library, you need to create an [Amplitude](https://amplitude.com) account and retrieve an API key.\n\n## Parameters\n\n- `events` must be an array of valid `event` objects\n- `methods` defaults to `\"sendEvents\"` and can be ommitted\n\n## Example\n\n```\ndo events = [\n  {\n    \"user_id\": \"can_be_any_string\",\n    \"event_type\": \"flow1-step1\"\n  },\n  {\n    \"user_id\": \"can_be_any_string\",\n    \"event_type\": \"flow1-step2\"\n  }\n]\ndo Fn(\"amplitude\", method=\"sendEvents\", events=events)\n```\n\nFor more information about the `event` object, refer to: https://developers.amplitude.com/docs/batch-event-upload-api#event\n\n\n## Usage\n```\ndo Fn(\"amplitude\", method=\"sendEvents\", events=events)\n```\n",
+      "args": [
+        "events=[]",
+        "method=\"sendEvents\""
+      ],
+      "runtime": "nodejs12.x",
+      "handler": "index.handler",
+      "environment": {
+        "AMPLITUDE_API_KEY": ""
+      },
+      "app_id": "09f08741-09db-47b3-be8d-a476ae48ba2f",
+      "version": "1.0.0"
+    },
+    {
+      "name": "google/sheets",
+      "description": "Save and access data in a Google Sheets table.\n\n**Authentication**\n\nTo authenticate this app, please refer to this documentation: [https://cloud.google.com/docs/authentication/production](https://cloud.google.com/docs/authentication/production) and create a Service Account to interact with Google Sheets.\nYou can also refer to [this documentation](https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication?id=service-account) for a step-by-step walkthrough on how to retrieve the right credentials.\n\nYou will also need a `spreadsheet_id` that you can pass as an argument to the Fn call or as an optional environment variable.\nThe spreadsheet ID can be found in the URL of your spreadsheet: for example,\nin `https://docs.google.com/spreadsheets/d/1R_uHoL3PmS3pAa5ujG2aARbw9REIjORXiZDGigQoLoA/edit#gid=0`, the spreadsheet ID is\n`1R_uHoL3PmS3pAa5ujG2aARbw9REIjORXiZDGigQoLoA`.\n\n**Methods**\n\n- `Fn(\"google/sheets\", method=\"setHeaderRow\", values=[\"firstname\", \"lastname\"])`: set the header row for the table\n- `Fn(\"google/sheets\", method=\"addRow\", row={\"firstname\": \"John\", \"lastname\": \"Smith\"})`: add a row in the sheet\n- `Fn(\"google/sheets\", method=\"addRows\", rows=[{\"firstname\": \"John\", \"lastname\": \"Smith\"}, {\"firstname\": \"Jane\", \"lastname\": \"Doe\"}])`: add multiple rows at once\n- `Fn(\"google/sheets\", method=\"getRows\", limit=100, offset=0)`: retrieve the first 100 rows of your sheet\n- `Fn(\"google/sheets\", method=\"clear\")`: remove all the data in this sheet.\n\nOptional properties:\n\n- spreadsheet_id: Must be set either in each function call or in the environment variables. If it is set in both places, the one in the function call will be used.\n- sheet_index: If you are using a sheet other than the first spreadsheet tab, please pass its index (starting at 0). Defaults to 0.\n\n\n## Usage\n```\nFn(\"google/sheets\", method=\"addRow\", row={\"firstname\": \"John\", \"lastname\": \"Smith\"}, spreadsheet_id=\"ABC123456\", sheet_index=2)\n```\n",
+      "args": [
+        "method=\"\"",
+        "spreadsheet_id=\"\""
+      ],
+      "runtime": "nodejs12.x",
+      "handler": "index.handler",
+      "environment": {
+        "PRIVATE_KEY": "",
+        "CLIENT_EMAIL": "",
+        "SPREADSHEET_ID": "",
+        "PROJECT_ID": ""
+      },
+      "app_id": "93ff5316-cb80-45bd-9784-b6dfc35871ed",
+      "version": "1.0.0"
+    },
+    {
+      "name": "utils/uuid",
+      "description": "Generate random UUIDs (either v1 or v4 - defaults to v4)\n\n## Usage\n```\nFn(\"utils/uuid\", version=\"v1|v4\")\n```\n",
+      "args": [
+        "version=\"v1|v4\""
+      ],
+      "runtime": "nodejs12.x",
+      "handler": "index.handler",
+      "environment": {},
+      "app_id": "c8fc0a19-1dcf-4859-8fe3-ce49113567e3",
+      "version": "1.0.0"
+    }
+  ]
+}

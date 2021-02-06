@@ -1,0 +1,82 @@
+start:
+  remember fname = ""
+  remember lname = ""
+  remember jobtitle = ""
+  remember company = ""
+  remember emailaddress = ""
+  remember eventname = "HR Event"
+  say "Here is a super communication kit for you!"
+  say "Would you be ok to share a few infos ?"
+  say Image("https://media.giphy.com/media/zy6cfH1ZelttK/giphy.gif")
+  say Question("🎁",
+    button_type= "quick_reply",
+    buttons=[
+      Button("Sure!", accepts=["ye", "ok", "yes", "y"]) as btnYes,
+      Button("No thanks", accepts=["no", "nop", "nop", "na", "no"]) as btnNo
+    ]
+  )
+  hold
+  if (event match btnYes) {
+    say Typing(1000)
+    say "Ok! I'm gonne be quick 😊"
+    goto askfname
+  }
+  say Typing(3000)
+  say "No problem, do not hesitate to get back to me if you change your mind 😉"
+  goto end
+
+askfname:
+  say "What's your **firstname** ?"
+  hold
+  remember fname = event
+  goto asklname
+
+asklname:
+  say "...and your **lastname** ?"
+  hold
+  remember lname = event
+  goto askcompany
+
+askcompany:
+  say "Ok, and what's your **job** ?"
+  hold
+  remember company = event
+  goto askjobtitle
+
+askjobtitle:
+  say "Perfect! What **company** do you work for?"
+  hold
+  remember jobtitle = event
+  goto askemail
+
+askemail:
+  say "One more thing, I'd need your **email address** in order to send you the docs"
+  hold
+  if (event.contains_regex("^.+@.+\..+$")) {
+    remember emailaddress = event
+    goto getinfo
+  }
+  say Typing(2000)
+  say "This email address seems invalid 🤷‍♂️"
+  say Typing(1000)
+  say "Could you submit it again please?"
+  goto askemail
+
+getinfo:
+  do Fn("google/sheets", method="addRow", row={
+    "Firstname": fname,
+    "Lastname": lname,
+    "Job": jobtitle,
+    "Company": company,
+    "Email": emailaddress
+    }, spreadsheet_id="xxxx", sheet_index=0
+  )
+  goto thanks
+
+thanks:
+  say "Perfect!"
+  say Typing(2500)
+  say "Thank you {{fname}}!"
+  say Typing(2500)
+  say "See you later ! 🤗"
+  goto end
